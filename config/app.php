@@ -201,6 +201,9 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+        'HelpMethod'=> App\Http\Controllers\HelpMethod::class,
+        'Postman'   => App\Http\Controllers\Postman::class,
+        'DateJalali'   => App\Http\Controllers\DateJalali::class,
 
     ],
 

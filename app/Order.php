@@ -1,7 +1,8 @@
 <?php
 
 namespace App;
-use \App\HelpMethod;
+use App\Http\Controllers\HelpMethod;
+use Illuminate\Support\Facades\Input;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,14 +19,27 @@ class Order extends Model
     const SUCCESS = 1;
 
 
-    public static function saveOrder($driver)
+    public static function saveOrder($driver , $uid)
     {
-        $uid = HelpMethod::random(4).time();
+        if(isset($_POST['is_wow'])){
+            $amount = Input::get('amount_wow');
+        }else{
+            $amount = Input::get('amount');
+        }
         $order = new Order();
-        $order->amount = Input::get('amount');
-        $order->is_wow = isset($_POST['is_wow']) ? Input::get('is_wow') : '0';
+        $order->amount = $amount;
+        if($driver == 'RighTel'){
+            $order->is_wow = isset($_POST['is_wow']) ? '3' : '2';
+            $order->driver = Order::RIGH_TEL;
+        }elseif($driver == 'MTN'){
+            $order->is_wow = isset($_POST['is_wow']) ? '19' : '20';
+            $order->driver = Order::MTN;
+        }else{
+            $order->is_wow = '0';
+            $order->driver = Order::MCI;
+        }
         $order->mobile = Input::get('mobile');
-        $order->driver = Order::$driver;
+        $order->email = isset($_POST['email']) ? Input::get('email') : '';
         $order->status = Order::CREATED;
         $order->uid = $uid;
         $order->save();

@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -30,6 +26,18 @@ Route::group(['middleware' => ['web']], function () {
     //
 });
 
-
-Route::post('mci/charge','MCIController@chargeTopUp');
+Route::get('/','HomeController@index');
+Route::post('mci/charge','MCI\MCIController@chargeTopUp');
+Route::post('mtn/charge','MTN\MTNController@chargeTopUp');
+Route::post('rightel/charge','RighTel\RighTelController@chargeTopUp');
 Route::any('{$provider}/callback','OrderController@bankCallback');
+Route::get('afterpay/{$orderId}','HomeController@afterPay');
+
+//ADMIN
+//Route::group(['middleware'=>['checkRole'] ] , function(){
+    Route::get('admin/dashboard' , 'Admin\AdminController@dashboard');
+    Route::get('admin/report' , 'Admin\AdminController@report');
+//});
+Route::get('admin/login' , 'Admin\AdminController@login');
+Route::post('admin/login' , 'Admin\AdminController@login');
+Route::get('logout' , 'Admin\AdminController@logout');

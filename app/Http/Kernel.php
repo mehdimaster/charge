@@ -34,6 +34,10 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
         ],
+        'checkRole' => [
+            \App\Http\Middleware\CheckRole::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+        ],
     ];
 
     /**

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\MCI;
 
 use App\Order;
-use \App\Postman;
-use \App\HelpMethod;
+use Postman;
+use HelpMethod;
+use Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 
 
 class MCIController extends \App\Http\Controllers\Controller
@@ -12,9 +15,19 @@ class MCIController extends \App\Http\Controllers\Controller
 
     public function chargeTopUp()
     {
+        $validator = Validator::make(Input::all(), [
+            "amount" => "required",
+            "mobile" => "required",
+        ]);
+
+        if ($validator->fails()) {
+                return Redirect::to(url("/"))->with('error', 'required');
+        }
         //validator
-        Order::saveOrder('MCI');
-        return view('frontend.simulate_bank', ['uid' => $order->uid]);
+        $uid = HelpMethod::random(4).time();
+        $amount = Input::get('amount');
+        Order::saveOrder('MCI',$uid);
+        return view('formBank',compact('uid','amount'));
         //redirect to view bank form
     }
 
