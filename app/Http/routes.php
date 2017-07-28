@@ -32,3 +32,4 @@ Route::group(['middleware' => ['web']], function () {
 
 
 Route::post('mci/charge','MCIController@chargeTopUp');
+Route::any('{$provider}/callback','OrderController@bankCallback');
